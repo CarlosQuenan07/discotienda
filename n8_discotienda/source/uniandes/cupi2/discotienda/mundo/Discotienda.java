@@ -44,7 +44,7 @@ public class Discotienda
      * La lista de discos de la discotienda
      */
     private ArrayList discos;
-    
+
     /**
      * Es el nombre del archivo de donde se cargan y salvan los discos
      */
@@ -496,42 +496,66 @@ public class Discotienda
     // Puntos de Extensi�n
     // -----------------------------------------------------------------
     
-    /**
-     * metodo para generar un reporte de canciones 
-     * @throws FileNotFound
+    /*
+     * Metodo para generar un reporte de canciones
+     * @param No tiene parametros
      */
-    public void crearReporteCanciones () throws FileNotFoundException{
-    	File miArchivo = new File ("./data/reporteCanciones");
-    	PrintWriter pluma= new PrintWriter (miArchivo);
+    public void generarReporteDiscos() throws FileNotFoundException{
+    	File miArchivo = new File("./data/reporteDiscos");
+    	PrintWriter pluma = new PrintWriter(miArchivo);
     	
-    	for (int i = 0 ; i < discos.size (); i++) {
+    	pluma.println("----Reporte de Canciones----");
+    	pluma.println("--------------------------------");
+    	
+    	for (int i = 0; i < discos.size(); i++) {
     		Disco miDisco = (Disco)discos.get(i);
+    		pluma.println("Nombre:" + miDisco.darNombreDisco() + "Artista: "+miDisco.darArtista() + 
+    		"Género: "+miDisco.darGenero() + "Precio: "+miDisco.darPrecioDisco());
     		
-    		pluma.println("***Reporte De Discos***"
-    		+ "==========================="
-    		+ "Nombre: " + miDisco.darNombreDisco()
-    		+ "precio: "+ miDisco.darPrecioDisco() 
-    		+ "Artista: "+ miDisco.darArtista()
-    		+ "Genero" + miDisco.darGenero());
     		
-    		pluma.close ();
     	}
+    	pluma.close();
     	
     }
     
+    public void generarReporteDiscosCostosos() throws FileNotFoundException{
+    	File miArchivo = new File("./data/discosCostosos");
+    	PrintWriter pluma = new PrintWriter(miArchivo);
+    	
+    	pluma.println("----Reporte de Canciones de alto Costo----");
+    	pluma.println("--------------------------------");
+    	
+    	
+    	for (int i = 0; i < discos.size(); i++) {
+    			
+			Disco miDisco = (Disco)discos.get(i);
+			if (miDisco.darPrecioDisco()>3500&&miDisco.darGenero().equals("Rock")||miDisco.darGenero().equals("Pop")) {
+				pluma.println("-----------Discos Costosos------------");
+				pluma.println("Nombre:" + miDisco.darNombreDisco() + "Artista: "+miDisco.darArtista() + 
+			    		"Género: "+miDisco.darGenero() + " Precio: "+miDisco.darPrecioDisco());
+			}
+			else if (miDisco.darPrecioDisco()<3500&&miDisco.darGenero().equals("Rock")||miDisco.darGenero().equals("Pop")){
+				pluma.println("El disco:" + miDisco.darNombreDisco() + " no es costoso, su valor es de: "+ miDisco.darPrecioDisco());
+			}
+    		
+    	}
+    	pluma.close();
+    	
+    }
     /**
      * Es el punto de extensi�n 1
      * @return respuesta 1
-     */
+     */    
     public String metodo1( )
     {
     	try {
-        crearReporteCanciones ();
-        return ("reporte generado exitosamente!");
+    		generarReporteDiscos();
+    		return ("Reporte Generado Exitosamente!!");
     	}
-    	catch (Exception e) {
-    		return ("Error al generar el reporte, tipo: " + e);
+    	catch(Exception e) {
+    		return ("Error al generar el reporte, tipo: "+e);
     	}
+    	
     }
 
     /**
@@ -540,7 +564,13 @@ public class Discotienda
      */
     public String metodo2( )
     {
-        return "respuesta 2";
+    	try {
+    		generarReporteDiscosCostosos();
+    		return ("Reporte Generado Exitosamente!!");
+    	}
+    	catch(Exception e) {
+    		return ("Error al generar el reporte, tipo: "+e);
+    	}
     }
 
     /**
